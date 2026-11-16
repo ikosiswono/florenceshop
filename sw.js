@@ -3,15 +3,15 @@
  * Provides offline caching, lightning-fast mobile loading, and background updates.
  */
 
-const CACHE_NAME = 'florence-store-v1';
+const CACHE_NAME = 'florence-store-v2';
 const STATIC_ASSETS = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/script.js',
-  '/manifest.json',
-  '/icon.svg',
-  '/app-icon.png'
+  './',
+  './index.html',
+  './style.css',
+  './script.js',
+  './manifest.json',
+  './icon.svg',
+  './app-icon.png'
 ];
 
 // Install Event: Pre-cache static assets
@@ -40,7 +40,7 @@ self.addEventListener('activate', (event) => {
 
 // Fetch Event: Network-first with cache fallback
 self.addEventListener('fetch', (event) => {
-  // Ignore non-GET requests or external API calls (e.g. Midtrans or Supabase)
+  // Ignore non-GET requests or external API calls
   if (event.request.method !== 'GET') return;
 
   const url = new URL(event.request.url);
