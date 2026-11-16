@@ -21,8 +21,8 @@ Website ini dirancang menggunakan standar murni **Vanilla Web (HTML/CSS/JS)** ta
 5. Pada pengaturan proyek:
    - **Framework Preset**: Pilih `Other` (atau biarkan default).
    - **Root Directory**: `./` (biarkan default).
-   - **Build Command**: Kosongkan (karena menggunakan vanilla HTML/CSS/JS).
-   - **Output Directory**: Kosongkan (biarkan default).
+   - **Build Command**: `npm run build` (atau kosongkan).
+   - **Output Directory**: `public` (otomatis terisi dari `vercel.json`).
 6. Klik tombol **"Deploy"**.
 7. Selesai! Website Anda langsung aktif di domain gratis seperti `florence-minecraft-store.vercel.app`. Setiap kali Anda melakukan update/push di GitHub, Vercel akan otomatis meng-update website secara instan!
 

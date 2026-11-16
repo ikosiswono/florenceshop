@@ -4,8 +4,9 @@
   "description": "Website Top-Up & Digital Store Server Minecraft Indonesia (Java & Bedrock Edition) dengan sistem transaksi dan pengiriman otomatis.",
   "main": "index.html",
   "scripts": {
-    "start": "npx serve .",
-    "dev": "npx serve .",
+    "build": "node build.js",
+    "start": "npx serve public",
+    "dev": "npx serve public",
     "deploy": "npx vercel --prod"
   },
   "keywords": [
