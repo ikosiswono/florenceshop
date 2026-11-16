@@ -1,0 +1,35 @@
+name: Validate & Deploy Storefront
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Validate JavaScript Syntax
+        run: |
+          node --check script.js
+          node --check sw.js
+
+      - name: Verify Core Web Files
+        run: |
+          test -f index.html || (echo "index.html missing!" && exit 1)
+          test -f style.css || (echo "style.css missing!" && exit 1)
+          test -f script.js || (echo "script.js missing!" && exit 1)
+          test -f vercel.json || (echo "vercel.json missing!" && exit 1)
+          test -f manifest.json || (echo "manifest.json missing!" && exit 1)
+          test -f sw.js || (echo "sw.js missing!" && exit 1)
+          test -f icon.svg || (echo "icon.svg missing!" && exit 1)
+          echo "All core files verified successfully!"
