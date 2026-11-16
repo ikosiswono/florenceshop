@@ -1133,6 +1133,34 @@ function closeModal(id) {
   playSound('click');
 }
 
+// Download QRIS image for mobile users (saving to phone photo gallery)
+function downloadQrisImage() {
+  const qrImg = document.getElementById("qris-image");
+  if (!qrImg || !qrImg.src) return;
+
+  const a = document.createElement("a");
+  a.href = qrImg.src;
+  a.download = `QRIS-${activeInvoice ? activeInvoice.invoiceId : 'Florence'}.png`;
+  a.target = "_blank";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  showToast("Gambar QRIS berhasil diunduh! Buka aplikasi e-Wallet dan pilih 'Scan dari Galeri'.", "success");
+  playSound('click');
+}
+
+// Copy invoice number to clipboard
+function copyInvoiceId() {
+  if (!activeInvoice) return;
+  navigator.clipboard.writeText(activeInvoice.invoiceId).then(() => {
+    showToast(`Nomor Invoice "${activeInvoice.invoiceId}" berhasil disalin!`, "success");
+    playSound('click');
+  }).catch(() => {
+    showToast(`Invoice: ${activeInvoice.invoiceId}`, "info");
+  });
+}
+
 // Toast notification system
 function showToast(message, type = "info") {
   const container = document.getElementById("toast-container");

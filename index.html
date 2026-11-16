@@ -465,6 +465,7 @@
   <!-- Cart / Checkout Modal -->
   <div class="modal-overlay" id="checkout-modal">
     <div class="modal-dialog glass-panel">
+      <div class="bottom-sheet-handle" aria-hidden="true"></div>
       <div class="modal-header">
         <div class="modal-title-wrap">
           <i data-lucide="shopping-bag" class="text-purple"></i>
@@ -615,6 +616,7 @@
   <!-- Midtrans / QRIS Payment Simulation Modal -->
   <div class="modal-overlay" id="payment-modal">
     <div class="modal-dialog glass-panel payment-dialog">
+      <div class="bottom-sheet-handle" aria-hidden="true"></div>
       <div class="modal-header">
         <div class="modal-title-wrap">
           <i data-lucide="qr-code" class="text-cyan"></i>
@@ -654,6 +656,14 @@
             <img src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=FLORENCE_MINECRAFT_STORE_PAYMENT_SIMULATION" alt="QRIS Code" class="qr-image" id="qris-image">
             <div class="qr-scan-line"></div>
           </div>
+          <div class="mobile-qris-actions">
+            <button type="button" class="btn btn-outline btn-sm btn-block" onclick="downloadQrisImage()">
+              <i data-lucide="download"></i> Simpan QRIS ke Galeri HP
+            </button>
+            <button type="button" class="btn btn-ghost-sm btn-block" onclick="copyInvoiceId()">
+              <i data-lucide="copy"></i> Salin Nomor Invoice
+            </button>
+          </div>
           <div class="payment-steps">
             <ol>
               <li>Buka aplikasi e-Wallet atau M-Banking favoritmu.</li>
@@ -682,6 +692,7 @@
   <!-- Success Notification Modal -->
   <div class="modal-overlay" id="success-modal">
     <div class="modal-dialog glass-panel success-dialog">
+      <div class="bottom-sheet-handle" aria-hidden="true"></div>
       <div class="modal-body text-center">
         <div class="success-icon-wrap">
           <i data-lucide="check" class="success-checkmark"></i>
