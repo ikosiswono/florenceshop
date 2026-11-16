@@ -23,13 +23,16 @@ jobs:
           node --check script.js
           node --check sw.js
 
+      - name: Build Static Output
+        run: node build.js
+
       - name: Verify Core Web Files
         run: |
-          test -f index.html || (echo "index.html missing!" && exit 1)
-          test -f style.css || (echo "style.css missing!" && exit 1)
-          test -f script.js || (echo "script.js missing!" && exit 1)
+          test -f public/index.html || (echo "public/index.html missing!" && exit 1)
+          test -f public/style.css || (echo "public/style.css missing!" && exit 1)
+          test -f public/script.js || (echo "public/script.js missing!" && exit 1)
           test -f vercel.json || (echo "vercel.json missing!" && exit 1)
-          test -f manifest.json || (echo "manifest.json missing!" && exit 1)
-          test -f sw.js || (echo "sw.js missing!" && exit 1)
-          test -f icon.svg || (echo "icon.svg missing!" && exit 1)
-          echo "All core files verified successfully!"
+          test -f public/manifest.json || (echo "public/manifest.json missing!" && exit 1)
+          test -f public/sw.js || (echo "public/sw.js missing!" && exit 1)
+          test -f public/icon.svg || (echo "public/icon.svg missing!" && exit 1)
+          echo "All core files and public output verified successfully!"
