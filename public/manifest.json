@@ -1,0 +1,38 @@
+{
+  "name": "Florence Shop — Minecraft Store",
+  "short_name": "Florence Shop",
+  "description": "Toko digital resmi server Minecraft Indonesia. Beli Rank VIP, MVP, Crate Keys, dan Coins instan otomatis 24/7.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#101827",
+  "theme_color": "#101827",
+  "categories": ["games", "shopping", "entertainment"],
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./app-icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Katalog Ranks",
+      "url": "./#ranks",
+      "description": "Buka langsung daftar rank server"
+    },
+    {
+      "name": "Lacak Invoice",
+      "url": "./#cek-pesanan",
+      "description": "Cek status pesanan transaksi Anda"
+    }
+  ]
+}

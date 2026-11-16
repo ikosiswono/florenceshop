@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
+  <title>Florence Shop — Minecraft Top-Up & Digital Store</title>
+  <meta name="description" content="Toko digital resmi server Minecraft. Beli Rank VIP, MVP, Crate Keys, Coins, dan Items dengan pengiriman otomatis 24/7 via QRIS dan Bank Transfer.">
+  
+  <!-- PWA & Mobile App Support -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#101827">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Florence Shop">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="apple-touch-icon" href="icon.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Floating Audio & Server Status Bar -->
+  <aside class="quick-bar" aria-label="Quick Action Bar">
+    <div class="quick-bar-inner">
+      <div class="status-indicator">
+        <span class="pulse-dot"></span>
+        <span class="status-text">Server: <strong id="server-online-badge">Online</strong> (<span id="server-players-badge">1,248</span> Pemain)</span>
+      </div>
+      <div class="quick-actions">
+        <button id="btn-copy-ip-header" class="btn-ghost-sm" title="Klik untuk Salin IP Server">
+          <i data-lucide="server"></i>
+          <span>play.florenceshop.net</span>
+          <span class="tooltip-text">Salin IP</span>
+        </button>
+        <button id="btn-toggle-sound" class="btn-icon-sm" title="Aktif/Nonaktifkan Suara Efek">
+          <i data-lucide="volume-2" id="sound-icon"></i>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Navigation Bar -->
+  <header class="navbar" id="navbar">
+    <div class="container nav-container">
+      <a href="#" class="brand-logo">
+        <div class="logo-icon">
+          <i data-lucide="shield-check"></i>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">FLORENCE<span class="text-gold">SHOP</span></span>
+          <span class="brand-subtitle">MINECRAFT DIGITAL STORE</span>
+        </div>
+      </a>
+
+      <nav class="nav-links" id="nav-menu">
+        <a href="#beranda" class="nav-item active"><i data-lucide="home"></i> Beranda</a>
+        <a href="#store" class="nav-item"><i data-lucide="shopping-bag"></i> Store</a>
+        <a href="#ranks" class="nav-item" onclick="filterCategory('ranks')"><i data-lucide="crown"></i> Ranks</a>
+        <a href="#items" class="nav-item" onclick="filterCategory('items')"><i data-lucide="sword"></i> Items & Keys</a>
+        <a href="#cek-pesanan" class="nav-item"><i data-lucide="receipt"></i> Cek Pesanan</a>
+        <a href="#faq" class="nav-item"><i data-lucide="help-circle"></i> FAQ</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="cart-btn" id="open-cart-btn" aria-label="Buka Keranjang">
+          <i data-lucide="shopping-cart"></i>
+          <span class="cart-badge" id="cart-counter">0</span>
+        </button>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section" id="beranda">
+    <div class="hero-glow-1"></div>
+    <div class="hero-glow-2"></div>
+    <div class="container hero-container">
+      <div class="hero-content">
+        <div class="hero-tag">
+          <span class="tag-badge">UPDATE TERBARU</span>
+          <span class="tag-text">✨ Season 5 Grand Release & Special Discount!</span>
+        </div>
+        <h1 class="hero-headline">
+          Tingkatkan Dominasi di <br>
+          <span class="gradient-text">Florence Minecraft</span> Server
+        </h1>
+        <p class="hero-description">
+          Dapatkan akses Rank eksklusif, Kit legendaris, Crate Keys, dan koin dengan sistem otomatisasi instan. Langsung aktif di game dalam hitungan detik setelah pembayaran QRIS/Bank selesai.
+        </p>
+
+        <!-- Server IP Copy Bar -->
+        <div class="server-ip-box">
+          <div class="ip-info">
+            <span class="ip-label">IP SERVER JAVA & BEDROCK</span>
+            <span class="ip-address" id="server-ip-text">play.florenceshop.net</span>
+          </div>
+          <button class="btn-copy-ip" id="btn-copy-ip-main">
+            <i data-lucide="copy"></i>
+            <span id="copy-btn-text">Salin IP</span>
+          </button>
+        </div>
+
+        <!-- Hero Feature Badges -->
+        <div class="hero-features">
+          <div class="feature-item">
+            <div class="feature-icon icon-purple"><i data-lucide="zap"></i></div>
+            <div class="feature-text">
+              <strong>Otomatis & Instan</strong>
+              <span>Kirim via Server RCON < 5 detik</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon icon-cyan"><i data-lucide="credit-card"></i></div>
+            <div class="feature-text">
+              <strong>Pembayaran Lokal</strong>
+              <span>QRIS, VA, DANA, GoPay & Bank</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon icon-gold"><i data-lucide="shield"></i></div>
+            <div class="feature-text">
+              <strong>Garansi Terpercaya</strong>
+              <span>100% Aman & Dilengkapi Invoice</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-cta">
+          <a href="#store" class="btn btn-primary btn-lg">
+            <i data-lucide="flame"></i>
+            <span>Mulai Belanja</span>
+          </a>
+          <a href="#cek-pesanan" class="btn btn-outline btn-lg">
+            <i data-lucide="search"></i>
+            <span>Lacak Invoice</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Hero Visual Card / 3D Showcase -->
+      <div class="hero-showcase">
+        <div class="showcase-card glass-panel">
+          <div class="card-ribbon">LEGENDARY</div>
+          <div class="showcase-header">
+            <div class="rank-avatar-wrapper">
+              <img id="hero-avatar-preview" src="https://assets.mcasset.cloud/1.20.4/assets/minecraft/textures/item/nether_star.png" alt="Nether Star Texture" class="mc-avatar" style="object-fit:contain; padding:8px;">
+              <div class="avatar-ring"></div>
+            </div>
+            <div class="showcase-title">
+              <span class="badge-rank gold">LEGENDARY</span>
+              <h3>Florence Monarch (Legend)</h3>
+              <p>Permanen · Ikon: Nether Star</p>
+            </div>
+          </div>
+
+          <div class="showcase-benefits">
+            <div class="benefit-item"><i data-lucide="check"></i> <span>15 Perintah: Akses SEMUA fitur & perintah server</span></div>
+            <div class="benefit-item"><i data-lucide="check"></i> <span>Auto-Totem of Undying aktif saat HP kritis</span></div>
+            <div class="benefit-item"><i data-lucide="check"></i> <span>Global Broadcast Banner menyapa saat Anda login</span></div>
+            <div class="benefit-item"><i data-lucide="check"></i> <span>Bonus Uang Survival: $5.000.000 & +50.000 Claim Blocks</span></div>
+          </div>
+
+          <div class="showcase-pricing">
+            <div class="price-wrapper">
+              <span class="price-label">Harga Spesial Monarch</span>
+              <div class="price-tag">
+                <span class="price-strikethrough">Rp 200.000</span>
+                <span class="price-current">Rp 150.000</span>
+              </div>
+            </div>
+            <button class="btn btn-gold btn-sm" onclick="quickBuy(12)">
+              <i data-lucide="shopping-bag"></i> Beli Sekarang
+            </button>
+          </div>
+        </div>
+
+        <!-- Recent live notification banner -->
+        <div class="live-activity-pill" id="live-activity">
+          <div class="activity-avatar">
+            <img src="https://mc-heads.net/avatar/Alex/48" alt="Alex Skin" id="activity-avatar">
+          </div>
+          <div class="activity-info">
+            <span class="activity-user" id="activity-user">Aldi_Craft</span>
+            <span class="activity-text" id="activity-text">baru saja membeli <strong>Rank MVP</strong></span>
+          </div>
+          <span class="activity-time" id="activity-time">1m lalu</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Server Stats Banner -->
+  <section class="server-stats-section">
+    <div class="container stats-grid">
+      <div class="stat-card">
+        <i data-lucide="users" class="stat-icon text-cyan"></i>
+        <div class="stat-details">
+          <h4>Pemain Terhubung</h4>
+          <span class="stat-number" id="stats-online-count">1,248</span>
+          <span class="stat-sub">Rekor: 2,400 Online</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <i data-lucide="layers" class="stat-icon text-purple"></i>
+        <div class="stat-details">
+          <h4>Versi Didukung</h4>
+          <span class="stat-number">1.19 — 1.21+</span>
+          <span class="stat-sub">Java & Bedrock (Geyser)</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <i data-lucide="check-circle-2" class="stat-icon text-gold"></i>
+        <div class="stat-details">
+          <h4>Total Transaksi</h4>
+          <span class="stat-number">14.850+</span>
+          <span class="stat-sub">99.8% Sukses Otomatis</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <i data-lucide="clock" class="stat-icon text-emerald"></i>
+        <div class="stat-details">
+          <h4>Kecepatan Pengiriman</h4>
+          <span class="stat-number">~3 Detik</span>
+          <span class="stat-sub">Langsung Masuk ke Akun</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Store Section -->
+  <section class="store-section" id="store">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-badge"><i data-lucide="sparkles"></i> KATALOG STORE</span>
+        <h2 class="section-title">Pilih Kategori & Item Impianmu</h2>
+        <p class="section-subtitle">Semua pembelian dilindungi invoice resmi dengan jaminan aktivasi instan.</p>
+      </div>
+
+      <!-- Category Filter Tabs & Search Bar -->
+      <div class="store-filter-bar">
+        <div class="category-tabs" id="category-tabs">
+          <button class="cat-tab active" data-cat="all">
+            <i data-lucide="grid"></i> Semua
+          </button>
+          <button class="cat-tab" data-cat="ranks">
+            <i data-lucide="crown"></i> Ranks
+          </button>
+          <button class="cat-tab" data-cat="items">
+            <i data-lucide="sword"></i> Items & Kits
+          </button>
+          <button class="cat-tab" data-cat="keys">
+            <i data-lucide="key"></i> Crate Keys
+          </button>
+          <button class="cat-tab" data-cat="coins">
+            <i data-lucide="coins"></i> Coins
+          </button>
+          <button class="cat-tab" data-cat="bundles">
+            <i data-lucide="package"></i> Paket Hemat
+          </button>
+        </div>
+
+        <div class="store-search-box">
+          <i data-lucide="search" class="search-icon"></i>
+          <input type="text" id="search-input" placeholder="Cari nama rank, item, coin..." autocomplete="off">
+          <button id="clear-search-btn" class="clear-search-btn" style="display:none;">&times;</button>
+        </div>
+      </div>
+
+      <!-- Product Grid Container -->
+      <div class="product-grid" id="product-grid">
+        <!-- Rendered via script.js dynamically -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Track Order / Cek Pesanan Section -->
+  <section class="order-tracker-section" id="cek-pesanan">
+    <div class="container">
+      <div class="tracker-card glass-panel">
+        <div class="tracker-header">
+          <div class="tracker-icon">
+            <i data-lucide="file-search"></i>
+          </div>
+          <div>
+            <h3>Cek Status Pesanan & Invoice</h3>
+            <p>Masukkan Nomor Invoice atau Username Minecraft kamu untuk memantau status pembayaran dan pengiriman item.</p>
+          </div>
+        </div>
+
+        <form class="tracker-form" id="tracker-form" onsubmit="event.preventDefault(); trackOrder();">
+          <div class="tracker-input-group">
+            <i data-lucide="receipt"></i>
+            <input type="text" id="tracker-invoice-input" placeholder="Contoh: INV-FLORENCE-202611-1029 atau Username" required>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i data-lucide="search"></i> Cari Pesanan
+          </button>
+        </form>
+
+        <!-- Result Box (Hidden by default) -->
+        <div class="tracker-result" id="tracker-result" style="display: none;">
+          <!-- Dynamically populated by JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section" id="faq">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-badge"><i data-lucide="help-circle"></i> BANTUAN & PANDUAN</span>
+        <h2 class="section-title">Pertanyaan yang Sering Diajukan</h2>
+        <p class="section-subtitle">Semua yang perlu kamu ketahui tentang pembelian di Florence Shop.</p>
+      </div>
+
+      <div class="faq-grid">
+        <div class="faq-card" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <h4>Berapa lama rank atau item masuk ke akun Minecraft saya?</h4>
+            <i data-lucide="chevron-down" class="faq-arrow"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Sistem kami terhubung langsung dengan server melalui Minecraft RCON Bridge. Begitu pembayaran Midtrans/QRIS Anda terverifikasi (otomatis), sistem mengeksekusi perintah pengiriman dalam waktu kurang dari 5 detik saat Anda online.</p>
+          </div>
+        </div>
+
+        <div class="faq-card" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <h4>Apakah pemain Minecraft Bedrock (HP/Win10/Console) bisa membeli?</h4>
+            <i data-lucide="chevron-down" class="faq-arrow"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Tentu saja! Jika Anda bermain via Bedrock melalui Floodgate/Geyser, pastikan memilih opsi "Bedrock Edition" saat checkout. Sistem akan otomatis menyesuaikan prefix akun (seperti tanda titik <code>.</code> di depan username) jika server membutuhkannya.</p>
+          </div>
+        </div>
+
+        <div class="faq-card" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <h4>Metode pembayaran apa saja yang diterima?</h4>
+            <i data-lucide="chevron-down" class="faq-arrow"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Kami mendukung QRIS (bisa scan menggunakan GoPay, OVO, Dana, ShopeePay, LinkAja, BCA Mobile, Livin Mandiri, dll.), Virtual Account Bank (BCA, BRI, BNI, Mandiri, Permata), serta gerai Alfamart & Indomaret.</p>
+          </div>
+        </div>
+
+        <div class="faq-card" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <h4>Apakah rank berlaku permanen atau memiliki durasi?</h4>
+            <i data-lucide="chevron-down" class="faq-arrow"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Kami menyediakan dua jenis pilihan: Durasi Bulanan (30 Hari) dan Permanen (Lifetime). Status durasi tertulis jelas pada kartu produk masing-masing sebelum Anda melakukan checkout.</p>
+          </div>
+        </div>
+
+        <div class="faq-card" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <h4>Bagaimana jika pembayaran berhasil tapi item belum masuk?</h4>
+            <i data-lucide="chevron-down" class="faq-arrow"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Jika inventory Anda penuh saat pengiriman atau server sedang restart, item akan otomatis antri di antrian aman. Anda juga dapat menggunakan menu "Cek Pesanan" dan klik tombol "Klaim Ulang" atau hubungi Admin via Discord/WhatsApp dengan menyertakan Nomor Invoice.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Community CTA Section -->
+  <section class="discord-cta-section">
+    <div class="container">
+      <div class="cta-banner glass-panel">
+        <div class="cta-content">
+          <span class="badge-gold">KOMUNITAS RESMI</span>
+          <h2>Bergabung dengan Ribuan Pemain di Discord Kami</h2>
+          <p>Dapatkan info giveaway mingguan, pengumuman event server, sneak-peek update, dan bantuan support 24 jam langsung dari staff.</p>
+          <div class="cta-buttons">
+            <a href="https://discord.gg" target="_blank" class="btn btn-discord btn-lg">
+              <i data-lucide="message-square"></i> Gabung Discord
+            </a>
+            <a href="https://wa.me" target="_blank" class="btn btn-outline btn-lg">
+              <i data-lucide="phone"></i> WhatsApp Admin
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-brand">
+        <div class="brand-logo">
+          <div class="logo-icon"><i data-lucide="shield-check"></i></div>
+          <div class="brand-text">
+            <span class="brand-title">FLORENCE<span class="text-gold">SHOP</span></span>
+            <span class="brand-subtitle">MINECRAFT DIGITAL STORE</span>
+          </div>
+        </div>
+        <p class="footer-desc">
+          Platform toko digital terpercaya untuk server Minecraft Indonesia. Pengiriman serba otomatis, aman, dan bergaransi resmi.
+        </p>
+        <p class="footer-disclaimer">
+          Kami tidak berafiliasi secara resmi dengan Mojang AB atau Microsoft. Seluruh aset Minecraft adalah hak cipta dari Mojang AB.
+        </p>
+      </div>
+
+      <div class="footer-links-group">
+        <h4>Navigasi Cepat</h4>
+        <ul>
+          <li><a href="#beranda">Beranda</a></li>
+          <li><a href="#store">Katalog Store</a></li>
+          <li><a href="#cek-pesanan">Lacak Invoice</a></li>
+          <li><a href="#faq">Panduan & Bantuan</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links-group">
+        <h4>Kategori Unggulan</h4>
+        <ul>
+          <li><a href="#store" onclick="filterCategory('ranks')">Pangkat & VIP</a></li>
+          <li><a href="#store" onclick="filterCategory('keys')">Crate Keys</a></li>
+          <li><a href="#store" onclick="filterCategory('items')">Kits & Senjata</a></li>
+          <li><a href="#store" onclick="filterCategory('coins')">Koin Server</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links-group">
+        <h4>Server & Keamanan</h4>
+        <div class="server-status-pill">
+          <span class="pulse-dot"></span> IP: <code>play.florenceshop.net</code>
+        </div>
+        <div class="security-badges">
+          <span class="sec-badge"><i data-lucide="lock"></i> SSL 256-bit Encrypted</span>
+          <span class="sec-badge"><i data-lucide="check-check"></i> Midtrans Verified</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container bottom-content">
+        <p>&copy; 2026 Florence Minecraft Store. All rights reserved.</p>
+        <div class="bottom-links">
+          <a href="#">Syarat & Ketentuan</a>
+          <a href="#">Kebijakan Privasi</a>
+          <a href="#">Status Server</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- Cart / Checkout Modal -->
+  <div class="modal-overlay" id="checkout-modal">
+    <div class="modal-dialog glass-panel">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <i data-lucide="shopping-bag" class="text-purple"></i>
+          <h3>Checkout Pesanan</h3>
+        </div>
+        <button class="modal-close" onclick="closeModal('checkout-modal')">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Player Identification Form -->
+        <div class="checkout-step-box">
+          <div class="step-badge">Langkah 1</div>
+          <h4 class="step-title">Informasi Akun Minecraft</h4>
+          
+          <div class="platform-selector">
+            <label class="platform-option active" id="platform-java" onclick="selectPlatform('java')">
+              <input type="radio" name="platform" value="java" checked>
+              <div class="platform-content">
+                <i data-lucide="monitor"></i>
+                <div>
+                  <strong>Java Edition</strong>
+                  <small>PC / Mac / Linux</small>
+                </div>
+              </div>
+            </label>
+            <label class="platform-option" id="platform-bedrock" onclick="selectPlatform('bedrock')">
+              <input type="radio" name="platform" value="bedrock">
+              <div class="platform-content">
+                <i data-lucide="smartphone"></i>
+                <div>
+                  <strong>Bedrock Edition</strong>
+                  <small>MCPE, Win10, Console</small>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="username-field-group">
+            <div class="username-input-wrap">
+              <i data-lucide="user" class="input-icon"></i>
+              <input type="text" id="mc-username-input" placeholder="Masukkan Username Minecraft..." autocomplete="off" oninput="updateAvatarPreview(this.value)">
+            </div>
+            <div class="player-avatar-preview">
+              <img id="checkout-avatar-img" src="https://mc-heads.net/avatar/Steve/64" alt="Skin Preview" title="Preview Skin Pemain">
+              <span id="checkout-avatar-name">Steve</span>
+            </div>
+          </div>
+          <p class="field-hint" id="bedrock-hint" style="display:none;">
+            <i data-lucide="info"></i> Bedrock user: Pastikan memasukkan username persis seperti di Gamertag Xbox.
+          </p>
+        </div>
+
+        <!-- Order Items List -->
+        <div class="checkout-step-box">
+          <div class="step-badge">Langkah 2</div>
+          <h4 class="step-title">Rincian Item yang Dipesan</h4>
+          <div class="cart-items-container" id="cart-items-list">
+            <!-- Dynamic items -->
+          </div>
+        </div>
+
+        <!-- Payment Method Selection -->
+        <div class="checkout-step-box">
+          <div class="step-badge">Langkah 3</div>
+          <h4 class="step-title">Pilih Metode Pembayaran</h4>
+
+          <div class="payment-channels">
+            <label class="payment-channel active" onclick="selectPaymentMethod('qris')">
+              <input type="radio" name="payment_method" value="qris" checked>
+              <div class="channel-info">
+                <div class="channel-header">
+                  <strong>QRIS (Instan & Bebas Biaya)</strong>
+                  <span class="badge-tag green">REKOMENDASI</span>
+                </div>
+                <small>GoPay, OVO, DANA, ShopeePay, BCA, Mandiri & Semua Mobile Banking</small>
+              </div>
+            </label>
+
+            <label class="payment-channel" onclick="selectPaymentMethod('bca_va')">
+              <input type="radio" name="payment_method" value="bca_va">
+              <div class="channel-info">
+                <strong>BCA Virtual Account</strong>
+                <small>Otomatis verifikasi 24 jam</small>
+              </div>
+            </label>
+
+            <label class="payment-channel" onclick="selectPaymentMethod('mandiri_va')">
+              <input type="radio" name="payment_method" value="mandiri_va">
+              <div class="channel-info">
+                <strong>Mandiri Virtual Account</strong>
+                <small>Verifikasi instan via Livin' Mandiri</small>
+              </div>
+            </label>
+
+            <label class="payment-channel" onclick="selectPaymentMethod('bri_va')">
+              <input type="radio" name="payment_method" value="bri_va">
+              <div class="channel-info">
+                <strong>BRI Virtual Account (BRIVA)</strong>
+                <small>Verifikasi otomatis via BRImo & ATM</small>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Coupon Code Box -->
+        <div class="checkout-step-box">
+          <div class="coupon-box">
+            <div class="coupon-input-wrap">
+              <i data-lucide="tag"></i>
+              <input type="text" id="coupon-input" placeholder="Punya kode promo? Masukkan di sini...">
+              <button type="button" class="btn btn-outline btn-sm" onclick="applyCoupon()">Gunakan</button>
+            </div>
+            <div id="coupon-alert" class="coupon-feedback" style="display:none;"></div>
+          </div>
+        </div>
+
+        <!-- Order Summary & Total -->
+        <div class="order-summary-box">
+          <div class="summary-row">
+            <span>Subtotal Produk:</span>
+            <span id="summary-subtotal">Rp 0</span>
+          </div>
+          <div class="summary-row" id="summary-discount-row" style="display:none;">
+            <span>Diskon Promo:</span>
+            <span class="text-emerald" id="summary-discount">- Rp 0</span>
+          </div>
+          <div class="summary-row">
+            <span>Biaya Layanan Gateway:</span>
+            <span class="text-muted">Rp 0 (Gratis)</span>
+          </div>
+          <div class="summary-divider"></div>
+          <div class="summary-row total-row">
+            <span>Total Pembayaran:</span>
+            <span class="summary-total-price" id="summary-total">Rp 0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('checkout-modal')">Batal</button>
+        <button type="button" class="btn btn-primary btn-lg" id="btn-process-payment" onclick="processCheckout()">
+          <i data-lucide="shield-check"></i> Lanjut ke Pembayaran
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Midtrans / QRIS Payment Simulation Modal -->
+  <div class="modal-overlay" id="payment-modal">
+    <div class="modal-dialog glass-panel payment-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <i data-lucide="qr-code" class="text-cyan"></i>
+          <h3>Selesaikan Pembayaran</h3>
+        </div>
+        <button class="modal-close" onclick="closeModal('payment-modal')">&times;</button>
+      </div>
+
+      <div class="modal-body payment-modal-body">
+        <div class="payment-meta-banner">
+          <div class="meta-row">
+            <span>Nomor Invoice:</span>
+            <strong id="pay-modal-invoice">INV-FLORENCE-202611-1029</strong>
+          </div>
+          <div class="meta-row">
+            <span>Username Pemain:</span>
+            <strong id="pay-modal-username" class="text-gold">Steve</strong>
+          </div>
+          <div class="meta-row">
+            <span>Total Tagihan:</span>
+            <strong id="pay-modal-amount" class="text-cyan">Rp 175.000</strong>
+          </div>
+        </div>
+
+        <div class="countdown-wrapper">
+          <span>Batas Waktu Pembayaran:</span>
+          <div class="countdown-timer" id="payment-countdown">14:59</div>
+        </div>
+
+        <!-- QRIS Box Area -->
+        <div class="qris-display-area" id="qris-box">
+          <div class="qris-branding">
+            <span class="qris-logo-text">QRIS <strong>NasionaL</strong></span>
+            <small>Scan dengan GoPay, OVO, Dana, ShopeePay atau Mobile Banking</small>
+          </div>
+          <div class="qr-code-frame">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=FLORENCE_MINECRAFT_STORE_PAYMENT_SIMULATION" alt="QRIS Code" class="qr-image" id="qris-image">
+            <div class="qr-scan-line"></div>
+          </div>
+          <div class="payment-steps">
+            <ol>
+              <li>Buka aplikasi e-Wallet atau M-Banking favoritmu.</li>
+              <li>Pilih menu <strong>Scan / Bayar QRIS</strong>.</li>
+              <li>Arahkan kamera ke QR Code di atas.</li>
+              <li>Periksa nama merchant: <strong>FLORENCE MINECRAFT STORE</strong>.</li>
+              <li>Konfirmasi pembayaran sesuai nominal yang tertera.</li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- Simulation Helper Banner for testing -->
+        <div class="simulation-helper-box">
+          <div class="helper-badge">
+            <i data-lucide="terminal"></i> SIMULASI TESTING WEBHOOK
+          </div>
+          <p>Karena ini adalah frontend rancangan UI/UX, Anda dapat menekan tombol simulasi di bawah untuk menguji respon otomatis saat pembayaran berhasil diverifikasi:</p>
+          <button type="button" class="btn btn-emerald btn-block" onclick="simulatePaymentSuccess()">
+            <i data-lucide="check-circle"></i> Simulasi Bayar Berhasil (Instant Webhook)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Notification Modal -->
+  <div class="modal-overlay" id="success-modal">
+    <div class="modal-dialog glass-panel success-dialog">
+      <div class="modal-body text-center">
+        <div class="success-icon-wrap">
+          <i data-lucide="check" class="success-checkmark"></i>
+        </div>
+        <h2 class="text-emerald">Pembayaran Berhasil!</h2>
+        <p class="success-desc">
+          Item/Rank Anda sedang dikirimkan secara otomatis ke server. Silakan masuk ke game dan periksa akun Anda!
+        </p>
+
+        <div class="success-summary-box">
+          <div class="summary-line">
+            <span>Invoice:</span>
+            <strong id="success-invoice-id">INV-202611-0001</strong>
+          </div>
+          <div class="summary-line">
+            <span>Username:</span>
+            <strong id="success-player-name">Steve</strong>
+          </div>
+          <div class="summary-line">
+            <span>Perintah Server:</span>
+            <code id="success-command-preview">/lp user Steve parent addtemp vip 30d</code>
+          </div>
+          <div class="summary-line">
+            <span>Status Pengiriman:</span>
+            <span class="badge-tag green"><i data-lucide="check"></i> COMPLETED</span>
+          </div>
+        </div>
+
+        <div class="success-actions">
+          <button type="button" class="btn btn-primary btn-block" onclick="closeModal('success-modal')">
+            <i data-lucide="thumbs-up"></i> Selesai & Kembali ke Toko
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PWA Install Banner for Mobile -->
+  <aside class="pwa-install-banner" id="pwa-install-banner" style="display:none;" aria-label="Install Aplikasi">
+    <div class="pwa-banner-content">
+      <img src="icon.svg" alt="Florence Shop Icon" class="pwa-icon">
+      <div class="pwa-text">
+        <strong>Pasang Aplikasi Florence Shop</strong>
+        <span>Akses instan di homescreen HP tanpa address bar browser!</span>
+      </div>
+    </div>
+    <div class="pwa-actions">
+      <button class="btn btn-gold btn-sm" id="btn-install-pwa">
+        <i data-lucide="download"></i> Pasang App
+      </button>
+      <button class="btn-dismiss-pwa" id="btn-dismiss-pwa" aria-label="Tutup">&times;</button>
+    </div>
+  </aside>
+
+  <!-- Mobile App Bottom Navigation Bar (Dock) -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobile Navigation">
+    <a href="#beranda" class="mobile-nav-item active" onclick="setMobileActiveNav(this)">
+      <i data-lucide="home"></i>
+      <span>Beranda</span>
+    </a>
+    <a href="#store" class="mobile-nav-item" onclick="setMobileActiveNav(this); filterCategory('all');">
+      <i data-lucide="shopping-bag"></i>
+      <span>Store</span>
+    </a>
+    <a href="#store" class="mobile-nav-item" onclick="setMobileActiveNav(this); filterCategory('ranks');">
+      <i data-lucide="crown"></i>
+      <span>Ranks</span>
+    </a>
+    <a href="#cek-pesanan" class="mobile-nav-item" onclick="setMobileActiveNav(this)">
+      <i data-lucide="receipt"></i>
+      <span>Invoice</span>
+    </a>
+    <button class="mobile-nav-item mobile-cart-nav" onclick="openCheckoutModal()" aria-label="Buka Keranjang">
+      <div class="mobile-cart-icon-wrap">
+        <i data-lucide="shopping-cart"></i>
+        <span class="mobile-cart-badge" id="mobile-cart-counter">0</span>
+      </div>
+      <span>Keranjang</span>
+    </button>
+  </nav>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Main Javascript -->
+  <script src="script.js"></script>
+</body>
+</html>
